@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 16:38:39 2016 gandoulf
-** Last update Fri Jan 29 13:02:56 2016 gandoulf
+** Last update Mon Feb  1 15:43:35 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -43,6 +43,7 @@ void	*findMemory(void *start, void *end, size_t size)
 #endif
       data = (void *)data + data->_allocSize;
     }
+  ((t_metadata *)usableSpace)->_allocSize = sizeSpace;
   return (usableSpace);
 }
 
@@ -83,7 +84,8 @@ void		useMemory(void *ptr, void *end, size_t size)
 
 
   memcpy(&nextData, data, sizeof(t_metadata));
-  nextData._allocSize = giveMemory(ptr, size);
+  //nextData._allocSize = giveMemory(ptr, size);
+  nextData._allocSize = ((t_metadata *)ptr)->_allocSize;
 #ifdef DEBUG
   printf("nextData allocsize = %zu, used = %d\n", nextData._allocSize, nextData._used);
 #endif
@@ -113,7 +115,7 @@ void		useMemory(void *ptr, void *end, size_t size)
 #endif
 }
 
-size_t		giveMemory(void *ptr, size_t size)
+/*size_t		giveMemory(void *ptr, size_t size)
 {
   size_t	memory = 0;
 
@@ -125,4 +127,4 @@ size_t		giveMemory(void *ptr, size_t size)
       ptr += *(size_t *)(ptr);
     }
   return (memory);
-}
+  }*/
