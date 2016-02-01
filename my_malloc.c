@@ -5,23 +5,21 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:19 2016 gandoulf
-** Last update Mon Feb  1 15:47:38 2016 gandoulf
+** Last update Mon Feb  1 15:32:19 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
 
-static void	*start;
-static void	*end;
-static int	a = 1;
+static void	*start = NULL;
+static void	*end = NULL;
 
 void	*malloc(size_t size)
 {
   void	*ptr;
-  if (a)
+  if (start == NULL)
     {
       start = sbrk(0);
       end = start;
-      a = 0;
     }
   #ifdef DEBUG
   printf("start = %p, end = %p\n", start, end);
@@ -44,10 +42,11 @@ void	*malloc(size_t size)
   return(ptr);
 }
 
+// TODO: set errno
 void	free(void *ptr)
 {
   if (ptr < start || ptr > end)
-    return ;	//error should be set
+    return ;
   ptr -= sizeof(int);
   *(int *)ptr = 0;
 }
@@ -55,7 +54,7 @@ void	free(void *ptr)
 void	*realloc(void *ptr, size_t size)
 {
   if (ptr < start || ptr > end)
-    return (malloc(size));	//should return malloc
+    return (malloc(size));
   if (size == 0)
     free(ptr);
   ptr -= sizeof(t_metadata);
@@ -75,7 +74,9 @@ void	show_alloc_mem()
   void		*ptr = start;
   t_metadata	*data;
 
+  #ifdef DEBUG
   printf("break : %p\n", end);
+  #endif
   while (ptr != end)
     {
       data = ptr;
