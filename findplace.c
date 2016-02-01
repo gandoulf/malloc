@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 16:38:39 2016 gandoulf
-** Last update Mon Feb  1 15:43:35 2016 gandoulf
+** Last update Mon Feb  1 16:25:52 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -58,7 +58,8 @@ void		*addMemory(void *start, void **end, void **ptr, size_t size)
       if ((sbrkCheck = sbrk(getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1))) == 0)
 	return (0);
       *ptr = start;
-      memset(*ptr, 0, sizeof(t_metadata));
+      ((t_metadata *)(*ptr))->_allocSize = getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1);
+      ((t_metadata *)(*ptr))->_used = 0;
 #ifdef DEBUG
       printf("\nptr = 0: PAGE SIZE ADDED = %zu\n", getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1));
 #endif
@@ -80,14 +81,9 @@ void		*addMemory(void *start, void **end, void **ptr, size_t size)
 void		useMemory(void *ptr, void *end, size_t size)
 {
   t_metadata	*data = ptr;
-  t_metadata	nextData;
 
-
-  memcpy(&nextData, data, sizeof(t_metadata));
-  //nextData._allocSize = giveMemory(ptr, size);
-  nextData._allocSize = ((t_metadata *)ptr)->_allocSize;
 #ifdef DEBUG
-  printf("nextData allocsize = %zu, used = %d\n", nextData._allocSize, nextData._used);
+  printf("nextData allocsize = %zu, used = %d\n", data->_allocSize, data->_used);
 #endif
   data->_allocSize = (size + sizeof(t_metadata));
   data->_used = 1;
@@ -100,14 +96,9 @@ void		useMemory(void *ptr, void *end, size_t size)
 #ifdef DEBUG
   printf("In useMemory data righted on : %p\n", data);
 #endif
-  if (nextData._allocSize == 0)
+  if (((t_metadata *)ptr)->_allocSize != (size + sizeof(t_metadata)))
     {
-      data->_allocSize = end - (void *)data;
-      data->_used = 0;
-    }
-  else if (nextData._allocSize != (size + sizeof(t_metadata)))
-    {
-      data->_allocSize = nextData._allocSize - (size + sizeof(t_metadata));
+      data->_allocSize = ((t_metadata *)ptr)->_allocSize - (size + sizeof(t_metadata));
       data->_used = 0;
     }
 #ifdef DEBUG
