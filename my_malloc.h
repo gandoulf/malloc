@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "my_printf.h"
+
 #define _TRUE 1
 #define _FALSE 0
 

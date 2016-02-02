@@ -22,23 +22,23 @@ void	*malloc(size_t size)
       end = start;
     }
   #ifdef DEBUG
-  printf("start = %p, end = %p\n", start, end);
-  printf("size of malloc = %zu\n", size);
+  my_putstr("start = %p, end = %p\n", start, end);
+  my_putstr("size of malloc = %d\n", size);
   #endif
   ptr = findMemory(start, end, size);
   #ifdef DEBUG
-  printf("\nafter findMemory ptr = %p\n", ptr);
+  my_putstr("\nafter findMemory ptr = %p\n", ptr);
   #endif
   if (addMemory(start, &end, &ptr, size) == 0)
     return (0);
   #ifdef DEBUG
-  printf("\nafter addMemory ptr = %p\n", ptr);
-  printf("after addMemory start = %p, end = %p\n", start, end);
+  my_putstr("\nafter addMemory ptr = %p\n", ptr);
+  my_putstr("after addMemory start = %p, end = %p\n", start, end);
   #endif
   useMemory(ptr, end, size);
   ptr += sizeof(t_metadata);
   #ifdef DEBUG
-  printf("\n\n");
+  my_putstr("\n\n");
   #endif
   return(ptr);
 }
@@ -76,12 +76,12 @@ void	show_alloc_mem()
   t_metadata	*data;
 
   #ifdef DEBUG
-  printf("break : %p\n", end);
+  my_putstr("break : %p\n", end);
   #endif
   while (ptr != end)
     {
       data = ptr;
-      printf("%p - %p : %zu\n", ptr + sizeof(t_metadata), ptr + data->_allocSize, data->_allocSize - sizeof(t_metadata));
+      my_putstr("%p - %p : %d\n", ptr + sizeof(t_metadata), ptr + data->_allocSize, data->_allocSize - sizeof(t_metadata));
       ptr += data->_allocSize;
     }
 }
