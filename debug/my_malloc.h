@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Fri Jan 29 13:15:50 2016 gandoulf
+** Last update Fri Jan 29 13:42:15 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_
@@ -24,9 +24,9 @@ typedef struct	__attribute__((packed))	s_metadata
   int					_used;
 }					t_metadata;
 
-void    *my_malloc(size_t size);
-void	my_free(void *);
-void	*my_realloc(void *, size_t);
+void    *malloc(size_t size);
+void	free(void *);
+void	*realloc(void *, size_t);
 void	show_alloc_mem();
 
 void    *findMemory(void *start, void *end, size_t size);

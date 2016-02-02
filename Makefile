@@ -1,5 +1,5 @@
 CC = gcc # C compiler
-CFLAGS = -fPIC -Wall -Wextra -O2 -g # C flags
+CFLAGS = -fPIC -Wall -Wextra -O2 -g #-DDEBUG # C flags
 LDFLAGS = -shared  # linking flags
 RM = rm -f  # rm command
 TARGET_LIB = libmalloc.so # target lib

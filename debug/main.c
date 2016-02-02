@@ -7,21 +7,21 @@ int	main()
   int	i = 0;
   int	a = 0;
 
-  str = my_malloc(56);
+  str = malloc(56);
   for (; i < 56; ++i)
     str[i] = 'a';
   str[55] = 0;
-  str2 = my_malloc(56);
+  str2 = malloc(56);
   for (i = 0; i < 56; ++i)
     str2[i] = 'b';
   str2[55] = 0;
   printf("str = %s, str2 = %s\n", str, str2);
-  str = my_realloc(str, 58);
+  str = realloc(str, 58);
   printf("str = %p\n", str);
   printf("str = %s, str2 = %s\n", str, str2);
-  str = my_malloc(14);
+  str = malloc(14);
   printf("str = %s, str2 = %s\n", str, str2);
-  show_alloc_mem();
+  //show_alloc_mem();
   /*  my_free(str);
   str = my_malloc(52);
   for (i = 0; i < 52; ++i)
