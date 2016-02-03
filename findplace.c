@@ -20,8 +20,8 @@ void	*findMemory(void *start, void *end, size_t size)
   while ((void *)data < end && sizeSpace != size && sizeSpace <= size +sizeof(t_metadata))
     {
 #ifdef DEBUG
-      my_printf("In findMemory data = %p\n", data);
-      my_printf("Propriete from data _allocSize = %d\n", data->_allocSize);
+      printf("In findMemory data = %p\n", data);
+      printf("Propriete from data _allocSize = %d\n", data->_allocSize);
 #endif
       if (data->_used == 0)
 	{
@@ -30,7 +30,7 @@ void	*findMemory(void *start, void *end, size_t size)
 	  sizeSpace += data->_allocSize - sizeof(t_metadata);
 	  nb += 1;
 #ifdef DEBUG
-	  my_printf("pute !!!!!\n");
+	  printf("pute !!!!!\n");
 #endif
 	}
       else
@@ -40,7 +40,7 @@ void	*findMemory(void *start, void *end, size_t size)
 	  nb = 0;
 	}
 #ifdef DEBUG
-      my_printf("In findMemory usableSpace = %p\n", usableSpace);
+      printf("In findMemory usableSpace = %p\n", usableSpace);
 #endif
       data = (void *)data + data->_allocSize;
     }
@@ -60,8 +60,8 @@ void		*addMemory(void *start, void **end, void **ptr, size_t size)
   if ((space = (*end - *ptr) - (sizeof(t_metadata) * 2)) >= (long long)size)
     {
 #ifdef DEBUG
-      my_printf("space = %d, size = %d\n", space, size);
-      my_printf ("ptr = %p\nend = %p\n", *ptr, *end);
+      printf("space = %d, size = %d\n", space, size);
+      printf ("ptr = %p\nend = %p\n", *ptr, *end);
 #endif
       return (sbrkCheck);
     }
@@ -71,13 +71,13 @@ void		*addMemory(void *start, void **end, void **ptr, size_t size)
 	return (0);
       ((t_metadata *)(*ptr))->_allocSize += (getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
 #ifdef DEBUG
-      my_printf ("\nentering in add Memory, end = %p\n", *end);
+      printf ("\nentering in add Memory, end = %p\n", *end);
 #endif
       //*end += (getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
       *end = sbrk(0);
 #ifdef DEBUG
-      my_printf("PAGE SIZE ADDED = %d\n", getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
-      my_printf ("now end = %p\n", *end);
+      printf("PAGE SIZE ADDED = %d\n", getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
+      printf ("now end = %p\n", *end);
 #endif
     }
   return (sbrkCheck);
@@ -92,18 +92,18 @@ void		useMemory(void *ptr, void __attribute__((unused)) *end , size_t size)
 
   memcpy(&nextData, ptr, sizeof(t_metadata));
 #ifdef DEBUG
-  my_printf("nextData allocsize = %d, used = %d of the adresse %p\n", nextData._allocSize, nextData._used, data);
+  printf("nextData allocsize = %d, used = %d of the adresse %p\n", nextData._allocSize, nextData._used, data);
 #endif
   data->_allocSize = (size + sizeof(t_metadata));
   data->_used = 1;
 #ifdef DEBUG
-  my_printf("In useMemory data alloc on : %p\n", data);
-  my_printf("set the alloc size to : %d\n", data->_allocSize);
-  my_printf("size = %d metadata = %d\n", size, sizeof(t_metadata));
+  printf("In useMemory data alloc on : %p\n", data);
+  printf("set the alloc size to : %d\n", data->_allocSize);
+  printf("size = %d metadata = %d\n", size, sizeof(t_metadata));
 #endif
   data = (void *)data + (size + sizeof(t_metadata));
 #ifdef DEBUG
-  my_printf("In useMemory data righted on : %p\n", data);
+  printf("In useMemory data righted on : %p\n", data);
 #endif
   if (nextData._allocSize != (size + sizeof(t_metadata)))
     {
@@ -111,7 +111,7 @@ void		useMemory(void *ptr, void __attribute__((unused)) *end , size_t size)
       data->_used = 0;
     }
 #ifdef DEBUG
-  my_printf("set the end of memory to : %d\n", data->_allocSize);
+  printf("set the end of memory to : %d\n", data->_allocSize);
 #endif
 }
 
