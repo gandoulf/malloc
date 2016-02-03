@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Fri Jan 29 13:42:15 2016 gandoulf
+** Last update Wed Feb  3 09:54:45 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_
@@ -36,7 +36,7 @@ void	*addMemory(void *start, void **end, void **ptr, size_t size);
 void	useMemory(void *ptr, void *end, size_t size);
 size_t	giveMemory(void *, size_t);
 
-void	*increasMemory(void **ptr, size_t size, void *start, void *end);
+void	*increasMemory(void **ptr, size_t size, void *start, void **end);
 void	reducedMemory(void *ptr, size_t size);
 
 #endif

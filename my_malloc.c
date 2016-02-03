@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:19 2016 gandoulf
-** Last update Tue Feb  2 17:15:19 2016 gandoulf
+** Last update Wed Feb  3 09:54:22 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -73,7 +73,7 @@ void	*realloc(void *ptr, size_t size)
 #endif
   if (((t_metadata *)ptr)->_allocSize - sizeof(t_metadata) < size)
     {
-      if (increasMemory(&ptr, size, start, end) == 0)
+      if (increasMemory(&ptr, size, start, &end) == 0)
 	return (0);
     }
   else if (((t_metadata *)ptr)->_allocSize > size)

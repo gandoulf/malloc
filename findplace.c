@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 16:38:39 2016 gandoulf
-** Last update Tue Feb  2 16:31:02 2016 gandoulf
+** Last update Wed Feb  3 15:15:56 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -51,12 +51,16 @@ void	*findMemory(void *start, void *end, size_t size)
 
 void		*addMemory(void *start, void **end, void **ptr, size_t size)
 {
-  size_t	space = 0;
+  long long	space = 0;
   void		*sbrkCheck = start;
 
-  if ((space = (*end - *ptr) - (sizeof(t_metadata) * 2)) >= size)
+  /*space = (*end - *ptr) - (sizeof(t_metadata) * 2);
+  if (space < 0)
+    space = 0;*/
+  if ((space = (*end - *ptr) - (sizeof(t_metadata) * 2)) >= (long long)size)
     {
 #ifdef DEBUG
+      my_printf("space = %d, size = %d\n", space, size);
       my_printf ("ptr = %p\nend = %p\n", *ptr, *end);
 #endif
       return (sbrkCheck);
@@ -65,10 +69,15 @@ void		*addMemory(void *start, void **end, void **ptr, size_t size)
     {
       if ((sbrkCheck = sbrk(getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1))) == (void *) -1)
 	return (0);
-      ((t_metadata *)(*ptr))->_allocSize += getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1);
+      ((t_metadata *)(*ptr))->_allocSize += (getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
+#ifdef DEBUG
+      my_printf ("\nentering in add Memory, end = %p\n", *end);
+#endif
+      //*end += (getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
       *end = sbrk(0);
 #ifdef DEBUG
-      my_printf("\nPAGE SIZE ADDED = %d\n", getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1));
+      my_printf("PAGE SIZE ADDED = %d\n", getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
+      my_printf ("now end = %p\n", *end);
 #endif
     }
   return (sbrkCheck);
