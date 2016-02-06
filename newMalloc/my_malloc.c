@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 14:49:53 2016 Enzo Resse
+** Last update Sat Feb  6 13:53:03 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -26,7 +26,7 @@ void    *malloc(size_t size)
     }
 #ifdef DEBUG
   printf("start = %p, end = %p\n", start, end);
-  printf("size of malloc = %d\n", size);
+  printf("size of malloc = %zu\n", size);
 #endif
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
   ptr = findMemory(start, end, size);
