@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 15:54:28 2016 Enzo Resse
+** Last update Sat Feb  6 18:32:55 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -44,19 +44,27 @@ void    *malloc(size_t size)
 #ifdef DEBUG
   printf("\n\n");
 #endif
+  show_alloc_mem();
   return(ptr);
 }
 
 void	free(void *ptr)
 {
+#ifdef DEBUG
+  printf("\nUSE FREE !!!!!\n");
+#endif
   if (ptr < start + sizeof(t_metadata) || ptr >= end)
     return;
   ptr -= sizeof(t_metadata);
   ((t_metadata *)ptr)->_used = 0;
+  show_alloc_mem();
 }
 
 void	*realloc(void *ptr, size_t size)
 {
+#ifdef DEBUG
+  printf("\nUSE REALLOC !!!!!\n");
+#endif
   if (ptr < start + sizeof(t_metadata) || ptr > end)
     return (malloc(size));
   if (size == 0)
