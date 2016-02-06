@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 13:30:43 2016 Maxime Agor
+** Last update Sat Feb  6 13:43:45 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -31,7 +31,9 @@ void		*findMemory(void *start, void *end, size_t size)
 	}
       ptr += ((t_metadata *)ptr)->_allocSize;
     }
+  #ifdef DEBUG
   printf("at the end of findMemoryend = %p, ptr = %p\n", end, ptr); 
+  #endif
   ((t_metadata *)memPosition)->_allocSize = memory;
   return (memPosition);
 }
@@ -40,8 +42,10 @@ void		*addMemory(void **end, void *ptr, size_t size)
 {
   size_t	space;
 
+  #ifdef DEBUG
   if (ptr == 0 || ptr >= *end)
     printf("FATAL ERROR ON PTR!!!\nptr = %p end = %p\n", ptr, *end);
+  #endif
 
   if (((t_metadata *)ptr)->_allocSize >= size + (2 * sizeof(t_metadata)))
     return (ptr);
