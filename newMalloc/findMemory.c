@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 13:30:38 2016 Enzo Resse
+** Last update Sat Feb  6 14:19:52 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -38,6 +38,8 @@ void		*findMemory(void *start, void *end, size_t size)
  
 void		*addMemory(void **end, void *ptr, size_t size)
 {
+  size_t	space;
+
   if (ptr == 0 || ptr >= *end)
     printf("FATAL ERROR ON PTR!!!\nptr = %p end = %p\n", ptr, *end);
 
@@ -45,8 +47,26 @@ void		*addMemory(void **end, void *ptr, size_t size)
     return (ptr);
   else
     {
-      if (sbrk(getpagesize() * ((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize) / getpagesize() + 1)) == (void *) -1)
+      space = getpagesize() * ((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize) / getpagesize() + 1);
+      if (sbrk(space) == (void *) -1)
 	return (0);
+      ((t_metadata *)ptr)->_allocSize += space;
+      *end = sbrk(0);
+    }
+  return (ptr);
+}
+
+void		*useMemory(void *ptr, size_t size)
+{
+  size_t	nextData;
+
+  nextData = ((t_metadata *)ptr)->_allocSize;
+  ((t_metadata *)ptr)->_allocSize = (size + sizeof(t_metadata));
+  ((t_metadata *)ptr)->_used = 1;
+  ptr += (size + sizeof(t_metadata));
+  if (nextData != size + sizeof(t_metadata))
+    {
+      
     }
 }
 
