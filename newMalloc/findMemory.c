@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 13:43:45 2016 Maxime Agor
+** Last update Sat Feb  6 14:48:09 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -60,7 +60,7 @@ void		*addMemory(void **end, void *ptr, size_t size)
   return (ptr);
 }
 
-void		*useMemory(void *ptr, size_t size)
+void		useMemory(void *ptr, size_t size)
 {
   size_t	nextData;
 

@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 13:39:29 2016 Maxime Agor
+** Last update Sat Feb  6 14:49:53 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -33,13 +33,13 @@ void    *malloc(size_t size)
 #ifdef DEBUG
   printf("\nafter findMemory ptr = %p\n", ptr);
 #endif
-  if (addMemory(start, &end, &ptr, size) == 0)
+  if (addMemory(&end, ptr, size) == 0)
     return (0);
 #ifdef DEBUG
   printf("\nafter addMemory ptr = %p\n", ptr);
   printf("after addMemory start = %p, end = %p\n", start, end);
 #endif
-  useMemory(ptr, end, size);
+  useMemory(ptr, size);
   ptr += sizeof(t_metadata);
 #ifdef DEBUG
   printf("\n\n");
