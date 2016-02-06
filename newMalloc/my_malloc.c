@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 15:07:48 2016 Enzo Resse
+** Last update Sat Feb  6 15:54:28 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -61,7 +61,17 @@ void	*realloc(void *ptr, size_t size)
     return (malloc(size));
   if (size == 0)
     free(ptr);
-  return (0);
+  ptr -= sizeof(t_metadata);
+  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
+    {
+      if ((ptr = increasMemory(ptr, size, start, &end)) == 0)
+	return (0);
+    }
+  else if (size <= ((t_metadata *)ptr)->_allocSize - 2 * sizeof(t_metadata))
+    reducedMemory(ptr, size);
+  ptr += sizeof(t_metadata);
+  return (ptr);
 }
 
 void	show_alloc_mem()
