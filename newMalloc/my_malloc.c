@@ -81,9 +81,11 @@ void	show_alloc_mem()
   printf("break : %p\n", end);
   while (ptr != end)
     {
-      printf("%p - %p : %zu\n", ptr + sizeof(t_metadata),
+      printf("%s", ((t_metadata *)ptr)->_used ? "\033[31m" : "\033[32m");
+      printf("%p - %p : %zu", ptr + sizeof(t_metadata),
 	     ptr + ((t_metadata *)ptr)->_allocSize,
 	     ((t_metadata *)ptr)->_allocSize - sizeof(t_metadata));
       ptr += ((t_metadata *)ptr)->_allocSize;
+      printf("\033[37m\n");
     }
 }

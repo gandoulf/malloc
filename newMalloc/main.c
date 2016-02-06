@@ -51,7 +51,7 @@ int main()
 
 
     // Free 10% to 20% of malloc'd memory
-    ptr = firstPtr + (paddedSize + sizeof(t_metadata) * (1 + ALLOC_NB / 10));
+    ptr = firstPtr + (paddedSize + sizeof(t_metadata)) * (1 + ALLOC_NB / 10);
     for (i = 0; i < ALLOC_NB / 10; ++i)
     {
         free(ptr + (paddedSize + sizeof(t_metadata)) * i);
@@ -61,12 +61,15 @@ int main()
         ptr + (paddedSize + sizeof(t_metadata)) * i,
         i * ALLOC_SIZE);
 
+    show_alloc_mem();
+
     // Alloc 10% to 15% of memory
-    // ptr = malloc(ALLOC_SIZE * (ALLOC_NB / 20));
-    ptr = malloc(ALLOC_SIZE / 2);
+    ptr = malloc(ALLOC_SIZE * (ALLOC_NB / 20));
+    // ptr = malloc(ALLOC_SIZE / 2);
+    show_alloc_mem();
 
     // Check the pointer's position
-    assert(ptr == firstPtr + paddedSize + (paddedSize + sizeof(t_metadata) * (ALLOC_NB / 10)));
+    assert(ptr == firstPtr + (paddedSize + sizeof(t_metadata)) * (1 + ALLOC_NB / 10));
 
     return 0;
 }
