@@ -57,19 +57,24 @@ void	free(void *ptr)
 
 void	*realloc(void *ptr, size_t size)
 {
-  if (ptr < start || ptr > end)
+  if (ptr < start + sizeof(t_metadata) || ptr > end)
     return (malloc(size));
   if (size == 0)
+  {
     free(ptr);
+    return NULL;
+  }
   ptr -= sizeof(t_metadata);
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
   if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
-      if ((ptr = increasMemory(ptr, size, start, &end)) == 0)
+      if ((ptr = increaseMemory(ptr, size, start, &end)) == 0)
 	return (0);
     }
-  else if (size <= ((t_metadata *)ptr)->_allocSize - 2 * sizeof(t_metadata))
-    reducedMemory(ptr, size);
+  else if (((t_metadata *)ptr)->_allocSize >= size + 2 * sizeof(t_metadata))
+    reduceMemory(ptr, size);
+  else
+    return ptr;
   ptr += sizeof(t_metadata);
   return (ptr);
 }

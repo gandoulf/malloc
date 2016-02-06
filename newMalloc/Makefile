@@ -22,7 +22,7 @@ TARGET_LIB = libmalloc.so # target lib
 
 SRCS =	findMemory.c \
 	my_malloc.c \
-	resignedMemory.c
+	reassignMemory.c
 
 OBJS = $(SRCS:.c=.o)
 

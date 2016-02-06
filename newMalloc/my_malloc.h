@@ -36,7 +36,7 @@ void	*addMemory(void **end, void *ptr, size_t size);
 void	useMemory(void *ptr, size_t size);
 size_t	giveMemory(void *, size_t);
 
-void	*increasMemory(void *ptr, size_t size, void *start, void **end);
-void	reducedMemory(void *ptr, size_t size);
+void	*increaseMemory(void *ptr, size_t size, void *start, void **end);
+void	reduceMemory(void *ptr, size_t size);
 
 #endif

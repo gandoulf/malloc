@@ -1,5 +1,5 @@
 /*
-** resignedMemory.c for  in /home/resse_e/rendu/malloc/newMalloc
+** reassignMemory.c for  in /home/resse_e/rendu/malloc/newMalloc
 ** 
 ** Made by Enzo Resse
 ** Login   <resse_e@epitech.net>
@@ -10,7 +10,7 @@
 
 #include "my_malloc.h"
 
-void	*increasMemory(void *ptr, size_t size, void *start, void **end)
+void	*increaseMemory(void *ptr, size_t size, void *start, void **end)
 {
   void	*save = ptr;
 
@@ -25,7 +25,7 @@ void	*increasMemory(void *ptr, size_t size, void *start, void **end)
   return (ptr);
 }
 
-void		reducedMemory(void *ptr, size_t size)
+void		reduceMemory(void *ptr, size_t size)
 {
   size_t	data;
 
