@@ -1,0 +1,26 @@
+/*
+** my_malloc.c for  in /home/resse_e/malloc
+** 
+** Made by Enzo Resse
+** Login   <resse_e@epitech.net>
+** 
+** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
+** Last update Sat Feb  6 12:21:29 2016 Enzo Resse
+*/
+
+#include "my_malloc.h"
+
+static void     *start = NULL;
+static void     *end = NULL;
+
+void    *malloc(size_t size)
+{
+  void  *ptr;
+  if (start == NULL)
+    {
+      start = sbrk(0);
+      sbrk(getpagesize());
+      ((t_metadata *)start)->_allocSize = getpagesize();
+      ((t_metadata *)start)->_used = 0;
+      end = sbrk(0);
+    }
