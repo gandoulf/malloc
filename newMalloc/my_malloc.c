@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 14:28:38 2016 Enzo Resse
+** Last update Sat Feb  6 13:39:29 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -45,4 +45,11 @@ void    *malloc(size_t size)
   printf("\n\n");
 #endif
   return(ptr);
+}
+
+void	free(void *ptr)
+{
+  if (ptr < start || ptr >= end)
+    return;
+  ((t_metadata *)ptr)->_used = 0;
 }

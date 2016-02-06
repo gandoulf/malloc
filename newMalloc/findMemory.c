@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 14:28:16 2016 Enzo Resse
+** Last update Sat Feb  6 13:30:43 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -70,4 +70,3 @@ void		*useMemory(void *ptr, size_t size)
       ((t_metadata *)ptr)->_used = 0;
     }
 }
-
