@@ -5,20 +5,17 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 12:50:57 2016 Maxime Agor
+** Last update Sat Feb  6 14:28:38 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
 
-static void	*start = NULL;
-static void	*end = NULL;
+static void     *start = NULL;
+static void     *end = NULL;
 
 void    *malloc(size_t size)
 {
   void  *ptr;
-
-  if (!size)
-    return NULL;
   if (start == NULL)
     {
       start = sbrk(0);
@@ -38,14 +35,14 @@ void    *malloc(size_t size)
 #endif
   if (addMemory(start, &end, &ptr, size) == 0)
     return (0);
-  /*#ifdef DEBUG
-    printf("\nafter addMemory ptr = %p\n", ptr);
-    printf("after addMemory start = %p, end = %p\n", start, end);
-    #endif
-    useMemory(ptr, end, size);
-    ptr += sizeof(t_metadata);
-    #ifdef DEBUG
-    printf("\n\n");
-    #endif*/
+#ifdef DEBUG
+  printf("\nafter addMemory ptr = %p\n", ptr);
+  printf("after addMemory start = %p, end = %p\n", start, end);
+#endif
+  useMemory(ptr, end, size);
+  ptr += sizeof(t_metadata);
+#ifdef DEBUG
+  printf("\n\n");
+#endif
   return(ptr);
 }

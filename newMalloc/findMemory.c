@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 14:19:52 2016 Enzo Resse
+** Last update Sat Feb  6 14:28:16 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -66,7 +66,8 @@ void		*useMemory(void *ptr, size_t size)
   ptr += (size + sizeof(t_metadata));
   if (nextData != size + sizeof(t_metadata))
     {
-      
+      ((t_metadata *)ptr)->_allocSize = nextData - (size + sizeof(t_metadata));
+      ((t_metadata *)ptr)->_used = 0;
     }
 }
 
