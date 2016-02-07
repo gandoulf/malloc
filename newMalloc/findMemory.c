@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sat Feb  6 18:09:45 2016 Enzo Resse
+** Last update Sun Feb  7 13:07:09 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -62,7 +62,7 @@ void		*addMemory(void **end, void *ptr, size_t size)
       return (0);
     }
 
-  space = getpagesize() * ((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1;
+  space = getpagesize() * (((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1);
 
 #ifdef DEBUG
   printf("space = %zu, size = %zu\n", space, size);
@@ -77,11 +77,13 @@ void		*addMemory(void **end, void *ptr, size_t size)
       if (sbrk(space) == (void *) -1)
 	return (0);
       ((t_metadata *)ptr)->_allocSize += space;
-      *end = sbrk(0);
-#ifdef DEBUG
-      printf("PAGE SIZE ADDED = %zu\n", getpagesize() * ((size + sizeof(t_metadata) - space) / getpagesize() + 1));
-      printf ("now end = %p\n", *end);
-#endif
+      //      printf ("end = %p\n", *end);
+      *end += space;
+      //*end = sbrk(0);
+      //#ifdef DEBUG
+      //printf("PAGE SIZE ADDED = %zu\n",space);
+
+      //#endif
     }
   return (ptr);
 }
