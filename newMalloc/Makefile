@@ -5,14 +5,14 @@
 ## Login   <agor_m@epitech.net>
 ## 
 ## Started on  Sat Feb  6 13:47:54 2016 Maxime Agor
-## Last update Sat Feb  6 15:54:45 2016 Maxime Agor
+## Last update Sun Feb  7 16:19:42 2016 Maxime Agor
 ##
 
 CC = gcc # C compiler
 
 CFLAGS = -fPIC -Wall -Wextra -O2 # C flags
 
-CFLAGS += -g -DDEBUG
+# CFLAGS += -g -DDEBUG
 
 LDFLAGS = -shared # linking flags
 

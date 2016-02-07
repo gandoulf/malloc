@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sun Feb  7 16:12:28 2016 Maxime Agor
+** Last update Sun Feb  7 16:32:40 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -17,6 +17,9 @@ void    *malloc(size_t size)
 {
   /* printf("USE MALLOC !!!!! malloc %zu\n", size); */
   void  *ptr;
+
+  if (!size)
+    return NULL;
   if (start == NULL)
     {
       start = sbrk(0);
@@ -94,8 +97,6 @@ void		*calloc(size_t nmemb, size_t size)
 {
   void		*ptr;
 
-  if (!size)
-    return NULL;
   if (!(ptr = malloc(nmemb * size)))
     return NULL;
   memset(ptr, 0, nmemb * size);
