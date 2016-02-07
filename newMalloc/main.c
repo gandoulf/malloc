@@ -71,5 +71,12 @@ int main()
     // Check the pointer's position
     assert(ptr == firstPtr + (paddedSize + sizeof(t_metadata)) * (1 + ALLOC_NB / 10));
 
+    void *tmp = ptr;
+    // Realloc the pointer
+    ptr = realloc(ptr, ALLOC_SIZE * (1 + ALLOC_NB / 20));
+    show_alloc_mem();
+
+    assert(ptr == tmp);
+
     return 0;
 }
