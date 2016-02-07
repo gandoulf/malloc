@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sat Feb  6 18:32:55 2016 Enzo Resse
+** Last update Sun Feb  7 13:09:11 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -15,6 +15,7 @@ static void     *end = NULL;
 
 void    *malloc(size_t size)
 {
+  //printf("USE MALLOC !!!!! malloc %zu\n", size);
   void  *ptr;
   if (start == NULL)
     {
@@ -44,12 +45,13 @@ void    *malloc(size_t size)
 #ifdef DEBUG
   printf("\n\n");
 #endif
-  show_alloc_mem();
+  //show_alloc_mem();
   return(ptr);
 }
 
 void	free(void *ptr)
 {
+  //printf("USE FREE !!!!!, free this : %p\n",ptr);
 #ifdef DEBUG
   printf("\nUSE FREE !!!!!\n");
 #endif
@@ -57,11 +59,12 @@ void	free(void *ptr)
     return;
   ptr -= sizeof(t_metadata);
   ((t_metadata *)ptr)->_used = 0;
-  show_alloc_mem();
+  //show_alloc_mem();
 }
 
 void	*realloc(void *ptr, size_t size)
 {
+  //printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
 #ifdef DEBUG
   printf("\nUSE REALLOC !!!!!\n");
 #endif
@@ -91,6 +94,7 @@ void	show_alloc_mem()
 {
   void		*ptr = start;
 
+  printf("end = %p\n", end);
   printf("break : %p\n", end);
   while (ptr != end)
     {
