@@ -5,23 +5,40 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 15:23:29 2016 Enzo Resse
-** Last update Sat Feb  6 16:48:08 2016 Enzo Resse
+** Last update Sun Feb  7 18:00:11 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
 
-void	*increaseMemory(void *ptr, size_t size, void *start, void **end)
+void		*increaseMemory(void *ptr, size_t size,
+				void *start, void **end)
 {
-  void	*save = ptr;
+  void		*save = ptr;
+  size_t	i = 0;
+  size_t	memorySize;
 
   ((t_metadata *)ptr)->_used = 0;
   ptr = findMemory(start, *end, size);
   if (addMemory(end, ptr, size) == 0)
     return (0);
   useMemory(ptr, size);
+  //show_alloc_mem();
   if (ptr != save)
-    memcpy(ptr + sizeof(t_metadata), save + sizeof(t_metadata),
-	   ((t_metadata *)save)->_allocSize - sizeof(t_metadata));
+    {
+      memorySize = ((t_metadata *)save)->_allocSize - sizeof(t_metadata);
+      /*printf("ptr = %p\nsav = %p\nsiz = %zu\n",
+	     ptr + sizeof(t_metadata),
+	     save + sizeof(t_metadata), 
+	     ((t_metadata *)save)->_allocSize - sizeof(t_metadata));*/
+      //memcpy(ptr + sizeof(t_metadata), save + sizeof(t_metadata),
+      //	     ((t_metadata *)save)->_allocSize - sizeof(t_metadata));
+      while (i < memorySize)
+	{
+	  ((char *)ptr)[i + sizeof(t_metadata)] =
+	    ((char *)save)[i + sizeof(t_metadata)];
+	  ++i;
+	}
+    }
   return (ptr);
 }
 
