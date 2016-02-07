@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sun Feb  7 13:09:11 2016 Enzo Resse
+** Last update Sun Feb  7 16:12:28 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -15,7 +15,7 @@ static void     *end = NULL;
 
 void    *malloc(size_t size)
 {
-  //printf("USE MALLOC !!!!! malloc %zu\n", size);
+  /* printf("USE MALLOC !!!!! malloc %zu\n", size); */
   void  *ptr;
   if (start == NULL)
     {
@@ -45,13 +45,13 @@ void    *malloc(size_t size)
 #ifdef DEBUG
   printf("\n\n");
 #endif
-  //show_alloc_mem();
+  /* show_alloc_mem(); */
   return(ptr);
 }
 
 void	free(void *ptr)
 {
-  //printf("USE FREE !!!!!, free this : %p\n",ptr);
+  /* printf("USE FREE !!!!!, free this : %p\n",ptr); */
 #ifdef DEBUG
   printf("\nUSE FREE !!!!!\n");
 #endif
@@ -59,12 +59,12 @@ void	free(void *ptr)
     return;
   ptr -= sizeof(t_metadata);
   ((t_metadata *)ptr)->_used = 0;
-  //show_alloc_mem();
+  /* show_alloc_mem(); */
 }
 
 void	*realloc(void *ptr, size_t size)
 {
-  //printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
+  /* printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size); */
 #ifdef DEBUG
   printf("\nUSE REALLOC !!!!!\n");
 #endif
@@ -88,6 +88,18 @@ void	*realloc(void *ptr, size_t size)
     return ptr;
   ptr += sizeof(t_metadata);
   return (ptr);
+}
+
+void		*calloc(size_t nmemb, size_t size)
+{
+  void		*ptr;
+
+  if (!size)
+    return NULL;
+  if (!(ptr = malloc(nmemb * size)))
+    return NULL;
+  memset(ptr, 0, nmemb * size);
+  return (ptr);  
 }
 
 void	show_alloc_mem()
