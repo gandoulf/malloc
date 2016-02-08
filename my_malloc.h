@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Sun Feb  7 15:57:34 2016 Maxime Agor
+** Last update Mon Feb  8 16:55:55 2016 Maxime Agor
 */
 
 #ifndef MYMALLOC_H_
@@ -15,10 +15,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define _TRUE 1
-#define _FALSE 0
-
-#define GET_VALUE(X, B) (((X) >> (B)) & 1)
+#define GET_VALUE(X, BIT) (((X) >> (BIT)) & 1)
+#define SET_VALUE(X, BIT, VALUE) (X) |= (VALUE) << (BIT)
 
 #define _USED 0
 #define _LOCKED 1
@@ -26,6 +24,9 @@
 typedef struct	__attribute__((packed))	s_metadata
 {
   size_t				_allocSize;
+  t_metadata				*prevFree;
+  t_metadata				*nextFree;
+  t_metadata				*nextElem;
   int					_used;
 }					t_metadata;
 
