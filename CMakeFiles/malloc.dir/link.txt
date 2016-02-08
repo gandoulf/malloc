@@ -1,1 +1,0 @@
-/usr/bin/cc  -fPIC    -shared -Wl,-soname,libmalloc.so -o libmalloc.so CMakeFiles/malloc.dir/my_malloc.c.o CMakeFiles/malloc.dir/resignedMemory.c.o CMakeFiles/malloc.dir/main.c.o CMakeFiles/malloc.dir/findplace.c.o -lmy 

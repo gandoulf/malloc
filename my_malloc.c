@@ -1,21 +1,27 @@
 /*
-** my_malloc.c for  in /home/gandoulf/epitech/PSU_project/test/malloc_test
-**
-** Made by gandoulf
-** Login   <gandoulf@epitech.net>
-**
-** Started on  Tue Jan 26 15:12:19 2016 gandoulf
-** Last update Wed Feb  3 09:54:22 2016 gandoulf
+** my_malloc.c for  in /home/resse_e/malloc
+** 
+** Made by Enzo Resse
+** Login   <resse_e@epitech.net>
+** 
+** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
+** Last update Mon Feb  8 14:35:57 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
 
-static void	*start = NULL;
-static void	*end = NULL;
+static void     *start = NULL;
+static void     *end = NULL;
 
-void	*malloc(size_t size)
+void    *malloc(size_t size)
 {
-  void	*ptr;
+#ifdef DEBUG
+  printf("USE MALLOC !!!!! malloc %zu\n", size);
+#endif
+  void  *ptr;
+
+  if (!size)
+    return NULL;
   if (start == NULL)
     {
       start = sbrk(0);
@@ -24,76 +30,97 @@ void	*malloc(size_t size)
       ((t_metadata *)start)->_used = 0;
       end = sbrk(0);
     }
-  #ifdef DEBUG
-  printf("start = %p, end = %p\n", start, end);
-  printf("size of malloc = %d\n", size);
-  #endif
+  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
   ptr = findMemory(start, end, size);
-  #ifdef DEBUG
-  printf("\nafter findMemory ptr = %p\n", ptr);
-  #endif
-  if (addMemory(start, &end, &ptr, size) == 0)
-    return (0);
-  #ifdef DEBUG
-  printf("\nafter addMemory ptr = %p\n", ptr);
-  printf("after addMemory start = %p, end = %p\n", start, end);
-  #endif
-  useMemory(ptr, end, size);
+  if (addMemory(&end, ptr, size) == 0)
+    {
+#ifdef DEBUG
+      printf("add memory fail\n");
+#endif
+      return (0);
+    }
+  useMemory(ptr, size);
   ptr += sizeof(t_metadata);
-  #ifdef DEBUG
-  printf("\n\n");
-  #endif
+#ifdef DEBUG
+  show_alloc_mem();
+#endif
   return(ptr);
 }
 
-// TODO: set errno
 void	free(void *ptr)
 {
 #ifdef DEBUG
-  printf("FREE USED!!!! for this adresse %p\n", ptr);
+  printf("USE FREE !!!!!, free this : %p\n",ptr);
 #endif
-  if (ptr < start || ptr > end)
-    return ;
-  ptr -= sizeof(int);
-  *(int *)ptr = 0;
+  if (ptr < start + sizeof(t_metadata) || ptr >= end)
+    return;
+  ptr -= sizeof(t_metadata);
+  ((t_metadata *)ptr)->_used = 0;
+
+#ifdef DEBUG
+  show_alloc_mem();
+#endif
 }
 
 void	*realloc(void *ptr, size_t size)
 {
 #ifdef DEBUG
-  printf("REALLOC USED!!!!!\n");
+  printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
 #endif
-  if (ptr < start || ptr > end || ptr == NULL)
+  if (ptr < start + sizeof(t_metadata) || ptr > end)
     return (malloc(size));
   if (size == 0)
+  {
     free(ptr);
+    return NULL;
+  }
   ptr -= sizeof(t_metadata);
-#ifdef DEBUG
-  printf("memories asked %d, current memories %d\n", size, ((t_metadata *)ptr)->_allocSize);
-#endif
-  if (((t_metadata *)ptr)->_allocSize - sizeof(t_metadata) < size)
+  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
-      if (increasMemory(&ptr, size, start, &end) == 0)
+      if ((ptr = increaseMemory(ptr, size, start, &end)) == 0)
 	return (0);
     }
-  else if (((t_metadata *)ptr)->_allocSize > size)
-    reducedMemory(ptr, size);
+  else if (((t_metadata *)ptr)->_allocSize >= size + 2 * sizeof(t_metadata))
+    reduceMemory(ptr, size);
   ptr += sizeof(t_metadata);
+#ifdef DEBUG
+  show_alloc_mem();
+#endif
   return (ptr);
+}
+
+void		*calloc(size_t nmemb, size_t size)
+{
+  void		*ptr;
+
+#ifdef DEBUG
+  printf("USE CALLOC !!!!! nmemb = %zu, size  %zu\n", nmemb, size);
+#endif
+  if (!(ptr = malloc(nmemb * size)))
+    return NULL;
+#ifdef DEBUG
+  printf("AFTER MALLOC CALL !!!!! ptr = %p\n", ptr);
+#endif
+  memset(ptr, 0, nmemb * size);
+#ifdef DEBUG
+  show_alloc_mem();
+#endif
+  return (ptr);  
 }
 
 void	show_alloc_mem()
 {
   void		*ptr = start;
-  t_metadata	*data;
 
-  #ifdef DEBUG
   printf("break : %p\n", end);
-  #endif
   while (ptr != end)
     {
-      data = ptr;
-      printf("%p - %p : %d\n", ptr + sizeof(t_metadata), ptr + data->_allocSize, data->_allocSize - sizeof(t_metadata));
-      ptr += data->_allocSize;
+      printf("%s", ((t_metadata *)ptr)->_used ? "\033[31m" : "\033[32m");
+      printf("%p - %p : %zu", ptr + sizeof(t_metadata),
+	     ptr + ((t_metadata *)ptr)->_allocSize,
+	     ((t_metadata *)ptr)->_allocSize - sizeof(t_metadata));
+      ptr += ((t_metadata *)ptr)->_allocSize;
+      printf("\033[37m\n");
     }
 }

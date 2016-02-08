@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Mon Feb  8 14:30:49 2016 Maxime Agor
+** Last update Mon Feb  8 15:29:32 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -58,7 +58,8 @@ void		*addMemory(void **end, void *ptr, size_t size)
       if (sbrk(space) == (void *) -1)
 	return (0);
       ((t_metadata *)ptr)->_allocSize += space;
-      *end = sbrk(0);
+      //*end = sbrk(0);
+      *end += space;
     }
   return (ptr);
 }
