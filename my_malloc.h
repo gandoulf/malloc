@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Mon Feb  8 16:55:55 2016 Maxime Agor
+** Last update Mon Feb  8 17:00:15 2016 Maxime Agor
 */
 
 #ifndef MYMALLOC_H_
@@ -24,9 +24,9 @@
 typedef struct	__attribute__((packed))	s_metadata
 {
   size_t				_allocSize;
-  t_metadata				*prevFree;
-  t_metadata				*nextFree;
-  t_metadata				*nextElem;
+  t_metadata				*_prevFree;
+  t_metadata				*_nextFree;
+  t_metadata				*_nextElem;
   int					_used;
 }					t_metadata;
 

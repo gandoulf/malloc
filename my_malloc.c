@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Mon Feb  8 14:35:57 2016 Maxime Agor
+** Last update Mon Feb  8 16:59:43 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -27,6 +27,7 @@ void    *malloc(size_t size)
       start = sbrk(0);
       sbrk(getpagesize());
       ((t_metadata *)start)->_allocSize = getpagesize();
+      ((t_metadata *)start)->_
       ((t_metadata *)start)->_used = 0;
       end = sbrk(0);
     }
