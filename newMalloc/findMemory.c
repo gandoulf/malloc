@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sun Feb  7 13:07:09 2016 Enzo Resse
+** Last update Mon Feb  8 11:40:17 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -56,9 +56,9 @@ void		*addMemory(void **end, void *ptr, size_t size)
 
   if (ptr == 0 || ptr >= *end)
     {
-#ifdef DEBUG
+      //#ifdef DEBUG
       printf("FATAL ERROR ON PTR!!!\nptr = %p end = %p\n", ptr, *end);
-#endif
+      //#endif
       return (0);
     }
 
