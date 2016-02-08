@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Mon Feb  8 16:59:43 2016 Maxime Agor
+** Last update Mon Feb  8 17:09:42 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -27,8 +27,7 @@ void    *malloc(size_t size)
       start = sbrk(0);
       sbrk(getpagesize());
       ((t_metadata *)start)->_allocSize = getpagesize();
-      ((t_metadata *)start)->_
-      ((t_metadata *)start)->_used = 0;
+      SET_VALUE(((t_metadata *)start)->_properties, _USED, 0);
       end = sbrk(0);
     }
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
@@ -56,7 +55,7 @@ void	free(void *ptr)
   if (ptr < start + sizeof(t_metadata) || ptr >= end)
     return;
   ptr -= sizeof(t_metadata);
-  ((t_metadata *)ptr)->_used = 0;
+  SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
 
 #ifdef DEBUG
   show_alloc_mem();
@@ -117,7 +116,7 @@ void	show_alloc_mem()
   printf("break : %p\n", end);
   while (ptr != end)
     {
-      printf("%s", ((t_metadata *)ptr)->_used ? "\033[31m" : "\033[32m");
+      printf("%s", GET_VALUE(((t_metadata *)ptr)->_properties, _USED) ? "\033[31m" : "\033[32m");
       printf("%p - %p : %zu", ptr + sizeof(t_metadata),
 	     ptr + ((t_metadata *)ptr)->_allocSize,
 	     ((t_metadata *)ptr)->_allocSize - sizeof(t_metadata));

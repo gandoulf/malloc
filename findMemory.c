@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Mon Feb  8 15:29:32 2016 Enzo Resse
+** Last update Mon Feb  8 17:07:46 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -20,7 +20,7 @@ void		*findMemory(void *start, void *end, size_t size)
     {
       if (((t_metadata *)ptr)->_allocSize == 0)
 	return (0);
-      if (((t_metadata *)ptr)->_used == 0)
+      if (GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
 	{
 	  if (memPosition == 0)
 	    memPosition = ptr;
@@ -70,11 +70,11 @@ void		useMemory(void *ptr, size_t size)
 
   nextData = ((t_metadata *)ptr)->_allocSize;
   ((t_metadata *)ptr)->_allocSize = (size + sizeof(t_metadata));
-  ((t_metadata *)ptr)->_used = 1;
+  SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 1);
   ptr += (size + sizeof(t_metadata));
   if (nextData != size + sizeof(t_metadata))
     {
       ((t_metadata *)ptr)->_allocSize = nextData - (size + sizeof(t_metadata));
-      ((t_metadata *)ptr)->_used = 0;
+      SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
     }
 }

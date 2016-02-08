@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Mon Feb  8 17:00:15 2016 Maxime Agor
+** Last update Mon Feb  8 17:09:22 2016 Maxime Agor
 */
 
 #ifndef MYMALLOC_H_
@@ -24,10 +24,10 @@
 typedef struct	__attribute__((packed))	s_metadata
 {
   size_t				_allocSize;
-  t_metadata				*_prevFree;
-  t_metadata				*_nextFree;
-  t_metadata				*_nextElem;
-  int					_used;
+  struct s_metadata			*_prevFree;
+  struct s_metadata			*_nextFree;
+  struct s_metadata			*_nextElem;
+  int					_properties;
 }					t_metadata;
 
 void    *malloc(size_t size);
