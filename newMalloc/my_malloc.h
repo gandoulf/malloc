@@ -18,6 +18,11 @@
 #define _TRUE 1
 #define _FALSE 0
 
+#define GET_VALUE(X, B) (((X) >> (B)) & 1)
+
+#define _USED 0
+#define _LOCKED 1
+
 typedef struct	__attribute__((packed))	s_metadata
 {
   size_t				_allocSize;
