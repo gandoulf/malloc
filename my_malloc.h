@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Mon Feb  8 17:09:22 2016 Maxime Agor
+** Last update Tue Feb  9 10:39:40 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_
@@ -38,8 +38,8 @@ void	*calloc(size_t, size_t);
 
 void    *findMemory(void *start, void *end, size_t size);
 void	*addMemory(void **end, void *ptr, size_t size);
+void	jumpMemory(void *ptr, void *breakPoint, size_t space);
 void	useMemory(void *ptr, size_t size);
-size_t	giveMemory(void *, size_t);
 
 void	*increaseMemory(void *ptr, size_t size, void *start, void **end);
 void	reduceMemory(void *ptr, size_t size);

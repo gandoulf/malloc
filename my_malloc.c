@@ -1,11 +1,11 @@
 /*
 ** my_malloc.c for  in /home/resse_e/malloc
-** 
+**
 ** Made by Enzo Resse
 ** Login   <resse_e@epitech.net>
-** 
+**
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Mon Feb  8 17:09:42 2016 Maxime Agor
+** Last update Tue Feb  9 14:25:57 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -26,13 +26,28 @@ void    *malloc(size_t size)
     {
       start = sbrk(0);
       sbrk(getpagesize());
-      ((t_metadata *)start)->_allocSize = getpagesize();
+      ((t_metadata *)start)->_allocSize = sizeof(t_metadata);
+      ((t_metadata *)start)->_prevFree = 0;
+      ((t_metadata *)start)->_nextFree = start + sizeof(t_metadata);
+      ((t_metadata *)start)->_nextElem = start + sizeof(t_metadata);
       SET_VALUE(((t_metadata *)start)->_properties, _USED, 0);
+      printf("start->nextFree = %p\n", ((t_metadata *)start)->_nextFree);
+
       end = sbrk(0);
+      ptr = start + sizeof(t_metadata);
+      ((t_metadata *)ptr)->_allocSize = getpagesize() - sizeof(t_metadata);
+      ((t_metadata *)ptr)->_prevFree = start;
+      ((t_metadata *)ptr)->_nextFree = end;
+      ((t_metadata *)ptr)->_nextElem = end;
+      SET_VALUE(((t_metadata *)start + sizeof(t_metadata))->_properties, _USED, 0);
     }
+  printf("start = %p, end = %p\n", start, end);
+  printf("malloc need memory size = %zu\n", size);
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  printf("try to find memory\n");
   ptr = findMemory(start, end, size);
-  if (addMemory(&end, ptr, size) == 0)
+  printf("memory found at %p\n", ptr);
+  if ((ptr = addMemory(&end, ptr, size)) == 0)
     {
 #ifdef DEBUG
       printf("add memory fail\n");
@@ -49,20 +64,28 @@ void    *malloc(size_t size)
 
 void	free(void *ptr)
 {
+  void	*tmp = start;
 #ifdef DEBUG
   printf("USE FREE !!!!!, free this : %p\n",ptr);
 #endif
   if (ptr < start + sizeof(t_metadata) || ptr >= end)
     return;
   ptr -= sizeof(t_metadata);
-  SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
-
+  ((t_metadata *)ptr)->_properties = 0;
+  //SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 1);
+  while (tmp < ptr && ((t_metadata *)tmp)->_nextFree <  (t_metadata *)ptr)
+    tmp = ((t_metadata *)tmp)->_nextFree;
+  if (((t_metadata *)tmp)->_nextFree != end)
+    ((t_metadata *)tmp)->_nextFree->_prevFree = ptr;
+  ((t_metadata *)tmp)->_nextFree = ptr;
+  ((t_metadata *)ptr)->_prevFree = tmp;
+  ((t_metadata *)ptr)->_nextFree = ((t_metadata *)tmp)->_nextFree;
 #ifdef DEBUG
   show_alloc_mem();
 #endif
 }
 
-void	*realloc(void *ptr, size_t size)
+/*void	*realloc(void *ptr, size_t size)
 {
 #ifdef DEBUG
   printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
@@ -106,8 +129,8 @@ void		*calloc(size_t nmemb, size_t size)
 #ifdef DEBUG
   show_alloc_mem();
 #endif
-  return (ptr);  
-}
+  return (ptr);
+  }*/
 
 void	show_alloc_mem()
 {
