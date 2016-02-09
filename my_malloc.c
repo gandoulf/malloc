@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Tue Feb  9 14:25:57 2016 gandoulf
+** Last update Tue Feb  9 16:03:36 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -68,18 +68,19 @@ void	free(void *ptr)
 #ifdef DEBUG
   printf("USE FREE !!!!!, free this : %p\n",ptr);
 #endif
-  if (ptr < start + sizeof(t_metadata) || ptr >= end)
-    return;
   ptr -= sizeof(t_metadata);
+  if (ptr < start || ptr >= end || GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
+    return;
   ((t_metadata *)ptr)->_properties = 0;
   //SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 1);
   while (tmp < ptr && ((t_metadata *)tmp)->_nextFree <  (t_metadata *)ptr)
     tmp = ((t_metadata *)tmp)->_nextFree;
+  printf("tmp = %p\n", tmp);
   if (((t_metadata *)tmp)->_nextFree != end)
     ((t_metadata *)tmp)->_nextFree->_prevFree = ptr;
-  ((t_metadata *)tmp)->_nextFree = ptr;
   ((t_metadata *)ptr)->_prevFree = tmp;
   ((t_metadata *)ptr)->_nextFree = ((t_metadata *)tmp)->_nextFree;
+  ((t_metadata *)tmp)->_nextFree = ptr;
 #ifdef DEBUG
   show_alloc_mem();
 #endif
