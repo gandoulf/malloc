@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Wed Feb 10 15:49:32 2016 Enzo Resse
+** Last update Wed Feb 10 17:00:52 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -79,8 +79,7 @@ void	free(void *ptr)
   ptr -= sizeof(t_metadata);
   if (ptr < start || ptr >= end || GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
     return;
-  ((t_metadata *)ptr)->_properties = 0;
-  //SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 1);
+  SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
   while (tmp < ptr && ((t_metadata *)tmp)->_nextFree <  (t_metadata *)ptr)
     tmp = ((t_metadata *)tmp)->_nextFree;
 #ifdef DEBUG
