@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Wed Feb 10 15:11:08 2016 Enzo Resse
+** Last update Wed Feb 10 15:16:18 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -31,7 +31,9 @@ void    *malloc(size_t size)
       ((t_metadata *)start)->_nextFree = start + sizeof(t_metadata);
       ((t_metadata *)start)->_nextElem = start + sizeof(t_metadata);
       SET_VALUE(((t_metadata *)start)->_properties, _USED, 0);
+#ifdef DEBUG
       printf("start->nextFree = %p\n", ((t_metadata *)start)->_nextFree);
+#endif
 
       end = sbrk(0);
       ptr = start + sizeof(t_metadata);
@@ -41,12 +43,18 @@ void    *malloc(size_t size)
       ((t_metadata *)ptr)->_nextElem = end;
       SET_VALUE(((t_metadata *)start + sizeof(t_metadata))->_properties, _USED, 0);
     }
+#ifdef DEBUG
   printf("start = %p, end = %p\n", start, end);
   printf("malloc need memory size = %zu\n", size);
+#endif
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+#ifdef DEBUG
   printf("try to find memory\n");
+#endif
   ptr = findMemory(start, end, size);
+#ifdef DEBUG
   printf("memory found at %p\n", ptr);
+#endif
   if ((ptr = addMemory(&end, ptr, size)) == 0)
     {
 #ifdef DEBUG
@@ -75,7 +83,9 @@ void	free(void *ptr)
   //SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 1);
   while (tmp < ptr && ((t_metadata *)tmp)->_nextFree <  (t_metadata *)ptr)
     tmp = ((t_metadata *)tmp)->_nextFree;
+#ifdef DEBUG
   printf("tmp = %p\n", tmp);
+#endif
   if (((t_metadata *)tmp)->_nextFree != end)
     ((t_metadata *)tmp)->_nextFree->_prevFree = ptr;
   ((t_metadata *)ptr)->_prevFree = tmp;
