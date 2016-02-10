@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Wed Feb 10 14:57:31 2016 Enzo Resse
+** Last update Wed Feb 10 15:11:08 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -86,7 +86,7 @@ void	free(void *ptr)
 #endif
 }
 
-/*void	*realloc(void *ptr, size_t size)
+void	*realloc(void *ptr, size_t size)
 {
 #ifdef DEBUG
   printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
@@ -131,7 +131,7 @@ void		*calloc(size_t nmemb, size_t size)
   show_alloc_mem();
 #endif
   return (ptr);
-  }*/
+}
 
 void	show_alloc_mem()
 {
