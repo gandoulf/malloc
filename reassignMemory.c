@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 15:23:29 2016 Enzo Resse
-** Last update Wed Feb 10 17:03:53 2016 Enzo Resse
+** Last update Wed Feb 10 17:22:09 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -18,7 +18,7 @@ void		*increaseMemory(void *ptr, size_t size,
   size_t	memorySize;
 
   //SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
-  free(ptr);
+  free(ptr - sizeof(t_metadata));
   ptr = findMemory(start, *end, size);
   if ((ptr = addMemory(end, ptr, size)) == 0)
     return (0);
