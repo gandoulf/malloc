@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Wed Feb 10 15:18:13 2016 Maxime Agor
+** Last update Wed Feb 10 16:09:17 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -72,8 +72,7 @@ void		*addMemory(void **end, void *ptr, size_t size)
 	    return (0);					// new
 	  jumpMemory(ptr, breakPoint, space);		// new
 	  ptr = breakPoint;				// new
-	  *end = sbrk(0);
-	  show_alloc_mem();
+	  //show_alloc_mem();
 	}
       else
 	{
@@ -86,27 +85,24 @@ void		*addMemory(void **end, void *ptr, size_t size)
 	  ((t_metadata *)ptr)->_allocSize += space;
 	  ((t_metadata *)ptr)->_nextFree = sbrk(0);	// new
 	  ((t_metadata *)ptr)->_nextElem = sbrk(0);	// new
-	  *end = sbrk(0);
 	}
+      *end = sbrk(0);
     }
   return (ptr);
 }
 
 void	jumpMemory(void *ptr, void *breakPoint, size_t space)
 {
-  void	*jumpMyFriend;
-
 #ifdef DEBUG
   printf("breakPoint = %p\n", breakPoint);
 #endif
-  jumpMyFriend = breakPoint;
   ((t_metadata *)ptr)->_nextFree = breakPoint;
   ((t_metadata *)ptr)->_nextElem = breakPoint;
-  ((t_metadata *)jumpMyFriend)->_allocSize = space;
-  ((t_metadata *)jumpMyFriend)->_prevFree = ptr;
-  ((t_metadata *)jumpMyFriend)->_nextFree = sbrk(0);
-  ((t_metadata *)jumpMyFriend)->_nextElem = sbrk(0);
-  SET_VALUE(((t_metadata *)jumpMyFriend)->_properties, _USED, 0);
+  ((t_metadata *)breakPoint)->_allocSize = space;
+  ((t_metadata *)breakPoint)->_prevFree = ptr;
+  ((t_metadata *)breakPoint)->_nextFree = sbrk(0);
+  ((t_metadata *)breakPoint)->_nextElem = sbrk(0);
+  SET_VALUE(((t_metadata *)breakPoint)->_properties, _USED, 0);
 }
 
 void		useMemory(void *ptr, size_t size)
