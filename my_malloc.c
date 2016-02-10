@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Tue Feb  9 16:03:36 2016 gandoulf
+** Last update Wed Feb 10 14:57:31 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -144,7 +144,10 @@ void	show_alloc_mem()
       printf("%p - %p : %zu", ptr + sizeof(t_metadata),
 	     ptr + ((t_metadata *)ptr)->_allocSize,
 	     ((t_metadata *)ptr)->_allocSize - sizeof(t_metadata));
-      ptr += ((t_metadata *)ptr)->_allocSize;
+      printf("\t: prev = %p, next = %p",
+	     ((t_metadata *)ptr)->_prevFree,
+	     ((t_metadata *)ptr)->_nextFree);
+      ptr = ((t_metadata *)ptr)->_nextElem;
       printf("\033[37m\n");
     }
 }

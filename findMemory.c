@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Tue Feb  9 13:57:12 2016 gandoulf
+** Last update Wed Feb 10 14:58:53 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -14,6 +14,7 @@ void		*findMemory(void *start, void *end, size_t size)
 {
   void		*ptr;
   void		*memPosition = 0;
+  void		*last = 0;
   size_t	memory = 0;
 
   ptr = ((t_metadata *)start)->_nextFree;
@@ -22,13 +23,22 @@ void		*findMemory(void *start, void *end, size_t size)
       printf("in find memory : ptr = %p\n", ptr);
       printf("in find memory : ptr->next = %p\n", ((t_metadata *)ptr)->_nextFree);
       if (memPosition + memory == ptr)
-	memory += ((t_metadata *)ptr)->_allocSize;
+	{
+	  last = memPosition + memory;
+	  memory += ((t_metadata *)ptr)->_allocSize;
+	}
       else
 	{
 	  memPosition = ptr;
 	  memory = ((t_metadata *)ptr)->_allocSize;
+	  last = ptr;
 	}
       ptr = ((t_metadata *)ptr)->_nextFree;
+    }
+  if (last != memPosition)
+    {
+      ((t_metadata *)memPosition)->_nextFree = ((t_metadata *)last)->_nextFree;
+      ((t_metadata *)memPosition)->_nextElem = ((t_metadata *)last)->_nextElem;
     }
   ((t_metadata *)memPosition)->_allocSize = memory;
   return (memPosition);
@@ -45,24 +55,29 @@ void		*addMemory(void **end, void *ptr, size_t size)
     {
       printf("INCREASE HEAP !!!");
       breakPoint = sbrk(0);				// new
+      printf("end = %p, breakPoint = %p\n", *end, breakPoint);
       if (breakPoint != *end)				// new
 	{
 	  space = getpagesize() * (size / getpagesize() + 1); //new
+	  printf("need a jump\n");
 	  if (sbrk(space) == (void *) -1)		// new
 	    return (0);					// new
 	  jumpMemory(ptr, breakPoint, space);		// new
 	  ptr = breakPoint;				// new
+	  *end = sbrk(0);
+	  show_alloc_mem();
 	}
       else
 	{
+	  printf("no interferance\n");
 	  space = getpagesize() * (((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1);
 	  if (sbrk(space) == (void *) -1)
 	    return (0);
 	  ((t_metadata *)ptr)->_allocSize += space;
 	  ((t_metadata *)ptr)->_nextFree = sbrk(0);	// new
 	  ((t_metadata *)ptr)->_nextElem = sbrk(0);	// new
+	  *end = sbrk(0);
 	}
-      *end = sbrk(0);
     }
   return (ptr);
 }
@@ -71,6 +86,7 @@ void	jumpMemory(void *ptr, void *breakPoint, size_t space)
 {
   void	*jumpMyFriend;
 
+  printf("breakPoint = %p\n", breakPoint);
   jumpMyFriend = breakPoint;
   ((t_metadata *)ptr)->_nextFree = breakPoint;
   ((t_metadata *)ptr)->_nextElem = breakPoint;
@@ -93,6 +109,7 @@ void		useMemory(void *ptr, size_t size)
 
   if (size + sizeof(t_metadata) == nextData)
     {
+      printf("puteee !!!\n");
       if (((t_metadata *)ptr)->_nextFree != sbrk(0))
 	((t_metadata *)ptr)->_nextFree->_prevFree = ((t_metadata *)ptr)->_prevFree;
       ((t_metadata *)ptr)->_prevFree->_nextFree = ((t_metadata *)ptr)->_nextFree;
@@ -110,5 +127,6 @@ void		useMemory(void *ptr, size_t size)
       ((t_metadata *)tmp)->_nextElem = ((t_metadata *)ptr)->_nextElem;
       SET_VALUE(((t_metadata *)tmp)->_properties, _USED, 0);
       ((t_metadata *)ptr)->_nextElem = tmp;
+      printf("end of use memory\n");
     }
 }
