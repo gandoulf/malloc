@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 14:38:41 2016 Maxime Agor
+** Last update Fri Feb 12 14:51:59 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -150,7 +150,7 @@ void	show_alloc_mem()
   while (ptr != end)
     {
       if (GET_VALUE(((t_metadata *)ptr)->_properties, _JUMPED))
-	printf("\033[33m");
+	printf("\033[36m");
       else
 	printf("%s", GET_VALUE(((t_metadata *)ptr)->_properties, _USED) ? "\033[31m" : "\033[32m");
       printf("%p - %p : %zu", ptr + sizeof(t_metadata),
