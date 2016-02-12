@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Wed Feb 10 16:09:17 2016 Enzo Resse
+** Last update Fri Feb 12 14:42:27 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -64,7 +64,7 @@ void		*addMemory(void **end, void *ptr, size_t size)
 #endif
       if (breakPoint != *end)				// new
 	{
-	  space = getpagesize() * (size / getpagesize() + 1); //new
+	  space = getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1); //new
 #ifdef DEBUG
 	  printf("need a jump\n");
 #endif
@@ -103,6 +103,7 @@ void	jumpMemory(void *ptr, void *breakPoint, size_t space)
   ((t_metadata *)breakPoint)->_nextFree = sbrk(0);
   ((t_metadata *)breakPoint)->_nextElem = sbrk(0);
   SET_VALUE(((t_metadata *)breakPoint)->_properties, _USED, 0);
+  SET_VALUE(((t_metadata *)breakPoint)->_properties, _JUMPED, 1);
 }
 
 void		useMemory(void *ptr, size_t size)
@@ -137,7 +138,7 @@ void		useMemory(void *ptr, size_t size)
       ((t_metadata *)tmp)->_nextFree = ((t_metadata *)ptr)->_nextFree;
       ((t_metadata *)tmp)->_prevFree = ((t_metadata *)ptr)->_prevFree;
       ((t_metadata *)tmp)->_nextElem = ((t_metadata *)ptr)->_nextElem;
-      SET_VALUE(((t_metadata *)tmp)->_properties, _USED, 0);
+      ((t_metadata *)tmp)->_properties = 0;
       ((t_metadata *)ptr)->_nextElem = tmp;
 #ifdef DEBUG
       printf("end of use memory\n");

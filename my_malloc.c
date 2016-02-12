@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Wed Feb 10 17:00:52 2016 Maxime Agor
+** Last update Fri Feb 12 14:38:41 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -30,7 +30,7 @@ void    *malloc(size_t size)
       ((t_metadata *)start)->_prevFree = 0;
       ((t_metadata *)start)->_nextFree = start + sizeof(t_metadata);
       ((t_metadata *)start)->_nextElem = start + sizeof(t_metadata);
-      SET_VALUE(((t_metadata *)start)->_properties, _USED, 0);
+      ((t_metadata *)start)->_properties = 0;
 #ifdef DEBUG
       printf("start->nextFree = %p\n", ((t_metadata *)start)->_nextFree);
 #endif
@@ -41,7 +41,7 @@ void    *malloc(size_t size)
       ((t_metadata *)ptr)->_prevFree = start;
       ((t_metadata *)ptr)->_nextFree = end;
       ((t_metadata *)ptr)->_nextElem = end;
-      SET_VALUE(((t_metadata *)start + sizeof(t_metadata))->_properties, _USED, 0);
+      ((t_metadata *)start + sizeof(t_metadata))->_properties = 0;
     }
 #ifdef DEBUG
   printf("start = %p, end = %p\n", start, end);
@@ -149,14 +149,18 @@ void	show_alloc_mem()
   printf("break : %p\n", end);
   while (ptr != end)
     {
-      printf("%s", GET_VALUE(((t_metadata *)ptr)->_properties, _USED) ? "\033[31m" : "\033[32m");
+      if (GET_VALUE(((t_metadata *)ptr)->_properties, _JUMPED))
+	printf("\033[33m");
+      else
+	printf("%s", GET_VALUE(((t_metadata *)ptr)->_properties, _USED) ? "\033[31m" : "\033[32m");
       printf("%p - %p : %zu", ptr + sizeof(t_metadata),
 	     ptr + ((t_metadata *)ptr)->_allocSize,
 	     ((t_metadata *)ptr)->_allocSize - sizeof(t_metadata));
       printf("\t: prev = %p, next = %p",
 	     ((t_metadata *)ptr)->_prevFree,
 	     ((t_metadata *)ptr)->_nextFree);
-      ptr = ((t_metadata *)ptr)->_nextElem;
+      printf("\t: properties = %d\n", ((t_metadata *)ptr)->_properties);
       printf("\033[37m\n");
+      ptr = ((t_metadata *)ptr)->_nextElem;
     }
 }

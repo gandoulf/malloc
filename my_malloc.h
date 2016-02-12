@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Tue Feb  9 15:31:54 2016 Maxime Agor
+** Last update Fri Feb 12 13:37:03 2016 Maxime Agor
 */
 
 #ifndef MYMALLOC_H_
@@ -20,6 +20,7 @@
 
 #define _USED 0
 #define _LOCKED 1
+#define _JUMPED 2
 
 typedef struct	__attribute__((packed))	s_metadata
 {
