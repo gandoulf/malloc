@@ -5,14 +5,49 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 17:40:29 2016 Maxime Agor
+** Last update Fri Feb 12 20:09:15 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
 #include <assert.h>
+#include <signal.h>
+#include <stdlib.h>
 
 static void     *start = NULL;
 static void     *end = NULL;
+
+void		handle_sigsegv(int __attribute__((unused)) sig)
+{
+  size_t	i = 0;
+  t_metadata	*ptr = start;
+  size_t	color_print = 0;
+
+  printf("SIGSEGV SIGNAL RECEIVED. ABORTING\n");
+  show_alloc_mem();
+  printf("DUMPING THE MEMORY\n");
+  while (start + i < end)
+    {
+      if (ptr == start + i)
+	{
+	  printf("\n\033[35mblock at pos %p (size %zu):\033[37m\n",
+		 ((void *)ptr) + sizeof(t_metadata),
+		 ptr->_allocSize);
+	  color_print = sizeof(t_metadata);
+	  ptr = ptr->_nextElem;
+	}
+      if (color_print > 0)
+	printf("\033[33m");
+      printf("%hhx%hhx ",
+	     *((unsigned char *)(start + i)) / 16,
+	     *((unsigned char *)(start + i)) % 16);
+      printf("\033[37m");
+      if (color_print > 0)
+	--color_print;
+
+      ++i;
+    }
+  abort();
+}
 
 void    *malloc(size_t size)
 {
@@ -25,6 +60,7 @@ void    *malloc(size_t size)
     return NULL;
   if (start == NULL)
     {
+      signal(11, handle_sigsegv);
       start = sbrk(0);
       sbrk(getpagesize());
       ((t_metadata *)start)->_allocSize = sizeof(t_metadata);
@@ -81,6 +117,8 @@ void	free(void *ptr)
 #ifdef DEBUG
   printf("USE FREE !!!!!, free this : %p\n",ptr);
 #endif
+  if (ptr < (void *)sizeof(t_metadata))
+    return ;
   ptr -= sizeof(t_metadata);
   if (ptr < start || ptr >= end || GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
     return;
