@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Mon Feb  8 14:35:57 2016 Maxime Agor
+** Last update Fri Feb 12 15:23:22 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -32,7 +32,7 @@ void    *malloc(size_t size)
     }
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
   ptr = findMemory(start, end, size);
-  if (addMemory(&end, ptr, size) == 0)
+  if ((ptr = addMemory(&end, ptr, size)) == 0)
     {
 #ifdef DEBUG
       printf("add memory fail\n");

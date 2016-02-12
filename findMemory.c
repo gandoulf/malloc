@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Mon Feb  8 15:29:32 2016 Enzo Resse
+** Last update Fri Feb 12 15:39:31 2016 Enzo Resse
 */
 
 #include "my_malloc.h"
@@ -40,26 +40,36 @@ void		*findMemory(void *start, void *end, size_t size)
 void		*addMemory(void **end, void *ptr, size_t size)
 {
   size_t	space;
-
-  if (ptr == 0 || ptr >= *end)
-    {
-#ifdef DEBUG
-      printf("FATAL ERROR ON PTR!!!\nptr = %p end = %p\n", ptr, *end);
-#endif
-      return (0);
-    }
-
-  space = getpagesize() * (((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1);
+  void		*breakPoint;
 
   if (((t_metadata *)ptr)->_allocSize >= size + (2 * sizeof(t_metadata)))
     return (ptr);
   else
     {
-      if (sbrk(space) == (void *) -1)
-	return (0);
-      ((t_metadata *)ptr)->_allocSize += space;
-      //*end = sbrk(0);
-      *end += space;
+      breakPoint = sbrk(0);
+      if (breakPoint != *end)
+	{
+	  printf("jump this\n");
+	  space = getpagesize() * ((size + 2 * sizeof(t_metadata)) / getpagesize()+ 1);
+	  if (sbrk(space) == (void *) -1)
+            return (0);
+	  ((t_metadata *)ptr)->_allocSize -= sizeof(t_metadata);
+	  ptr = *end - sizeof(t_metadata);
+	  ((t_metadata *)ptr)->_allocSize = breakPoint + sizeof(t_metadata) - *end;
+	  ((t_metadata *)ptr)->_used = 1;
+	  ptr = breakPoint;
+	  ((t_metadata *)ptr)->_allocSize = space;
+	  ((t_metadata *)ptr)->_used = 0;
+	}
+      else
+	{
+	  space = getpagesize() * (((size + (2 * sizeof(t_metadata)) - ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1);
+	  if (sbrk(space) == (void *) -1)
+	    return (0);
+	  ((t_metadata *)ptr)->_allocSize += space;
+	  //*end = sbrk(0);
+	}
+      *end = sbrk(0);
     }
   return (ptr);
 }
