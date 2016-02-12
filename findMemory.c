@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Fri Feb 12 14:42:27 2016 Maxime Agor
+** Last update Fri Feb 12 15:25:12 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -102,7 +102,7 @@ void	jumpMemory(void *ptr, void *breakPoint, size_t space)
   ((t_metadata *)breakPoint)->_prevFree = ptr;
   ((t_metadata *)breakPoint)->_nextFree = sbrk(0);
   ((t_metadata *)breakPoint)->_nextElem = sbrk(0);
-  SET_VALUE(((t_metadata *)breakPoint)->_properties, _USED, 0);
+  ((t_metadata *)breakPoint)->_properties = 0;
   SET_VALUE(((t_metadata *)breakPoint)->_properties, _JUMPED, 1);
 }
 

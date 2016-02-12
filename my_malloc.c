@@ -5,10 +5,11 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 14:58:12 2016 Maxime Agor
+** Last update Fri Feb 12 17:40:29 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
+#include <assert.h>
 
 static void     *start = NULL;
 static void     *end = NULL;
@@ -41,7 +42,7 @@ void    *malloc(size_t size)
       ((t_metadata *)ptr)->_prevFree = start;
       ((t_metadata *)ptr)->_nextFree = end;
       ((t_metadata *)ptr)->_nextElem = end;
-      ((t_metadata *)start + sizeof(t_metadata))->_properties = 0;
+      ((t_metadata *)(start + sizeof(t_metadata)))->_properties = 0;
     }
 #ifdef DEBUG
   printf("start = %p, end = %p\n", start, end);
@@ -66,6 +67,10 @@ void    *malloc(size_t size)
   ptr += sizeof(t_metadata);
 #ifdef DEBUG
   show_alloc_mem();
+#endif
+  assert(ptr > start && ptr < end);
+#ifdef DEBUG
+  printf("end of malloc\n");
 #endif
   return(ptr);
 }
@@ -120,6 +125,7 @@ void	*realloc(void *ptr, size_t size)
 #ifdef DEBUG
   show_alloc_mem();
 #endif
+  assert(ptr > start && ptr < end);
   return (ptr);
 }
 
@@ -139,6 +145,10 @@ void		*calloc(size_t nmemb, size_t size)
 #ifdef DEBUG
   show_alloc_mem();
 #endif
+#ifdef DEBUG
+  printf("end of calloc, returning %p\n", ptr);
+#endif
+  assert(ptr > start && ptr < end);
   return (ptr);
 }
 

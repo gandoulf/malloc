@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 ** 
 ** Started on  Sat Feb  6 15:23:29 2016 Enzo Resse
-** Last update Wed Feb 10 19:16:19 2016 Maxime Agor
+** Last update Fri Feb 12 15:20:13 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -60,5 +60,5 @@ void		reduceMemory(void *ptr, size_t size)
   ((t_metadata *)ptr)->_nextFree = ((t_metadata *)tmp)->_nextFree;
   ((t_metadata *)ptr)->_nextElem = ((t_metadata *)tmp)->_nextElem;
   ((t_metadata *)tmp)->_nextElem = tmp + ((t_metadata *)tmp)->_allocSize;
-  SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
+  ((t_metadata *)ptr)->_properties = 0;
 }
