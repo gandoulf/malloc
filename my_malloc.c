@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 14:51:59 2016 Maxime Agor
+** Last update Fri Feb 12 14:58:12 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -159,7 +159,7 @@ void	show_alloc_mem()
       printf("\t: prev = %p, next = %p",
 	     ((t_metadata *)ptr)->_prevFree,
 	     ((t_metadata *)ptr)->_nextFree);
-      printf("\t: properties = %d\n", ((t_metadata *)ptr)->_properties);
+      printf("\t: properties = %d", ((t_metadata *)ptr)->_properties);
       printf("\033[37m\n");
       ptr = ((t_metadata *)ptr)->_nextElem;
     }
