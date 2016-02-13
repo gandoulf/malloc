@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 20:09:15 2016 Maxime Agor
+** Last update Sat Feb 13 15:03:11 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -34,13 +34,13 @@ void		handle_sigsegv(int __attribute__((unused)) sig)
 		 ptr->_allocSize);
 	  color_print = sizeof(t_metadata);
 	  ptr = ptr->_nextElem;
+	  printf("\033[33m");
 	}
-      if (color_print > 0)
-	printf("\033[33m");
       printf("%hhx%hhx ",
 	     *((unsigned char *)(start + i)) / 16,
 	     *((unsigned char *)(start + i)) % 16);
-      printf("\033[37m");
+      if (color_print == 1)
+	printf("\033[37m");
       if (color_print > 0)
 	--color_print;
 
@@ -84,7 +84,7 @@ void    *malloc(size_t size)
   printf("start = %p, end = %p\n", start, end);
   printf("malloc need memory size = %zu\n", size);
 #endif
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
 #ifdef DEBUG
   printf("try to find memory\n");
 #endif
@@ -151,7 +151,7 @@ void	*realloc(void *ptr, size_t size)
     return NULL;
   }
   ptr -= sizeof(t_metadata);
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
   if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
       if ((ptr = increaseMemory(ptr, size, start, &end)) == 0)
@@ -164,6 +164,9 @@ void	*realloc(void *ptr, size_t size)
   show_alloc_mem();
 #endif
   assert(ptr > start && ptr < end);
+#ifdef DEBUG
+  printf("END OF REALLOC, returning %p\n", ptr);
+#endif
   return (ptr);
 }
 
