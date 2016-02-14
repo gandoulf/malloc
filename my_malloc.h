@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Sun Feb  7 15:57:34 2016 Maxime Agor
+** Last update Sun Feb 14 16:24:40 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
 
 #define _TRUE 1
 #define _FALSE 0

@@ -1,11 +1,11 @@
 /*
 ** findMemory.c for  in /home/resse_e/malloc
-** 
+**
 ** Made by Enzo Resse
 ** Login   <resse_e@epitech.net>
-** 
+**
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Fri Feb 12 15:39:31 2016 Enzo Resse
+** Last update Sun Feb 14 16:26:44 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -36,7 +36,7 @@ void		*findMemory(void *start, void *end, size_t size)
   ((t_metadata *)memPosition)->_allocSize = memory;
   return (memPosition);
 }
- 
+
 void		*addMemory(void **end, void *ptr, size_t size)
 {
   size_t	space;
@@ -49,7 +49,6 @@ void		*addMemory(void **end, void *ptr, size_t size)
       breakPoint = sbrk(0);
       if (breakPoint != *end)
 	{
-	  printf("jump this\n");
 	  space = getpagesize() * ((size + 2 * sizeof(t_metadata)) / getpagesize()+ 1);
 	  if (sbrk(space) == (void *) -1)
             return (0);
@@ -67,7 +66,6 @@ void		*addMemory(void **end, void *ptr, size_t size)
 	  if (sbrk(space) == (void *) -1)
 	    return (0);
 	  ((t_metadata *)ptr)->_allocSize += space;
-	  //*end = sbrk(0);
 	}
       *end = sbrk(0);
     }
