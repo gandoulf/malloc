@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Sun Feb 14 13:28:10 2016 gandoulf
+** Last update Sun Feb 14 16:16:24 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -57,7 +57,7 @@ void    *malloc(size_t size)
   printf("start = %p, end = %p\n", start, end);
   printf("malloc need memory size = %zu\n", size);
 #endif
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
 #ifdef DEBUG
   printf("try to find memory\n");
 #endif
@@ -163,7 +163,7 @@ void	*realloc(void *ptr, size_t size)
     return NULL;
   }
   ptr -= sizeof(t_metadata);
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
   if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
       free(ptr + sizeof(t_metadata));
