@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Sun Feb 14 18:08:20 2016 Maxime Agor
+** Last update Sun Feb 14 18:41:18 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -51,8 +51,8 @@ inline void	mergeMemory(void **memPosition, size_t *memory,
 
 void		*addMemory(void **end, void *ptr, size_t size)
 {
-  size_t	space;
   void		*breakPoint;
+  size_t	space;
 
   if (((t_metadata *)ptr)->_allocSize >= size + (2 * sizeof(t_metadata)))
     return (ptr);
@@ -69,15 +69,8 @@ void		*addMemory(void **end, void *ptr, size_t size)
 	  ptr = breakPoint;
 	}
       else
-	{
-	  space = getpagesize() * (((size + (2 * sizeof(t_metadata)) -
-	       ((t_metadata *)ptr)->_allocSize)) / getpagesize() + 1);
-	  if (sbrk(space) == (void *) -1)
-	    return (0);
-	  ((t_metadata *)ptr)->_allocSize += space;
-	  ((t_metadata *)ptr)->_nextFree = sbrk(0);
-	  ((t_metadata *)ptr)->_nextElem = sbrk(0);
-	}
+	if (!add_pagesize(size, ptr))
+	  return (0);
       *end = sbrk(0);
     }
   return (ptr);

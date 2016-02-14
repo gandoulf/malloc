@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Sun Feb 14 18:09:55 2016 Maxime Agor
+** Last update Sun Feb 14 18:40:04 2016 Maxime Agor
 */
 
 #ifndef MYMALLOC_H_
@@ -18,6 +18,7 @@
 
 #define GET_VALUE(X, BIT) (((X) >> (BIT)) & 1)
 #define SET_VALUE(X, B, V) (X) = (V) ? (X) | (1 << (B)) : (X) & ~(1 << (B))
+#define SPACE(PG, S, P) PG * (((S - ((t_metadata *)P)->_allocSize)) / PG + 1)
 
 #define _USED 0
 #define _LOCKED 1
@@ -54,5 +55,6 @@ inline void     create_link(void **tmp, void **ptr,
 			    size_t size, size_t nextData);
 inline void	*unlock_mutex_2_free_ptr_and_return_null(pthread_mutex_t *lock,
 							 void *ptr);
+inline int      add_pagesize(size_t size, void *ptr);
 
 #endif

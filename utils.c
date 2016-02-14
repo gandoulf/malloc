@@ -5,7 +5,7 @@
 ** Login   <agor_m@epitech.net>
 ** 
 ** Started on  Sun Feb 14 17:07:02 2016 Maxime Agor
-** Last update Sun Feb 14 18:10:04 2016 Maxime Agor
+** Last update Sun Feb 14 18:39:21 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -53,4 +53,17 @@ inline void	create_link(void **tmp, void **ptr,
   ((t_metadata *)*tmp)->_nextElem = ((t_metadata *)*ptr)->_nextElem;
   ((t_metadata *)*tmp)->_properties = 0;
   ((t_metadata *)*ptr)->_nextElem = *tmp;
+}
+
+inline int	add_pagesize(size_t size, void *ptr)
+{
+  size_t	space;
+
+  space = SPACE(getpagesize(), size + (2 * sizeof(t_metadata)), ptr);
+  if (sbrk(space) == (void *) -1)
+    return (0);
+  ((t_metadata *)ptr)->_allocSize += space;
+  ((t_metadata *)ptr)->_nextFree = sbrk(0);
+  ((t_metadata *)ptr)->_nextElem = sbrk(0);
+  return (1);
 }
