@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 15:23:29 2016 Enzo Resse
-** Last update Sun Feb 14 13:26:04 2016 gandoulf
+** Last update Sun Feb 14 14:08:15 2016 Maxime Agor
 */
 
 #include "my_malloc.h"
@@ -25,7 +25,6 @@ void		*increaseMemory(void *ptr, size_t size,
   ptr = findMemory(start, *end, size);
   if ((ptr = addMemory(end, ptr, size)) == 0)
     return (0);
-  useMemory(ptr, size);
   if (ptr != save)
     {
       /*printf("ptr = %p\nsav = %p\nsiz = %zu\n",
@@ -41,6 +40,7 @@ void		*increaseMemory(void *ptr, size_t size,
 	  ++i;
 	}
     }
+  useMemory(ptr, size);
   return (ptr);
 }
 
