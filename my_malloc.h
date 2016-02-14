@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Sun Feb 14 11:50:19 2016 gandoulf
+** Last update Sun Feb 14 11:52:13 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_
@@ -14,6 +14,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <pthread.h>
 
 #define GET_VALUE(X, BIT) (((X) >> (BIT)) & 1)
 #define SET_VALUE(X, BIT, VALUE) (X) = (VALUE) ? (X) | (1 << (BIT)) : (X) & ~(1 << (BIT))

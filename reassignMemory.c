@@ -1,11 +1,11 @@
 /*
 ** reassignMemory.c for  in /home/resse_e/rendu/malloc/newMalloc
-** 
+**
 ** Made by Enzo Resse
 ** Login   <resse_e@epitech.net>
-** 
+**
 ** Started on  Sat Feb  6 15:23:29 2016 Enzo Resse
-** Last update Fri Feb 12 15:20:13 2016 Maxime Agor
+** Last update Sun Feb 14 13:26:04 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -21,7 +21,7 @@ void		*increaseMemory(void *ptr, size_t size,
   printf("increasing memory from %p to %zu bytes\n", ptr, size);
 #endif
   memorySize = ((t_metadata *)save)->_allocSize - sizeof(t_metadata);
-  free(ptr + sizeof(t_metadata));
+  //free(ptr + sizeof(t_metadata));
   ptr = findMemory(start, *end, size);
   if ((ptr = addMemory(end, ptr, size)) == 0)
     return (0);
@@ -30,7 +30,7 @@ void		*increaseMemory(void *ptr, size_t size,
     {
       /*printf("ptr = %p\nsav = %p\nsiz = %zu\n",
 	     ptr + sizeof(t_metadata),
-	     save + sizeof(t_metadata), 
+	     save + sizeof(t_metadata),
 	     ((t_metadata *)save)->_allocSize - sizeof(t_metadata));*/
       //memcpy(ptr + sizeof(t_metadata), save + sizeof(t_metadata),
       //	     ((t_metadata *)save)->_allocSize - sizeof(t_metadata));

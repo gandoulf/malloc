@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 20:26:47 2016 gandoulf
+** Last update Sun Feb 14 13:28:10 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -13,16 +13,25 @@
 
 static void     *start = NULL;
 static void     *end = NULL;
+pthread_mutex_t	lock[4];
 
 void    *malloc(size_t size)
 {
-#ifdef DEBUG
-  printf("USE MALLOC !!!!! malloc %zu\n", size);
+#ifdef THREAD
+  pthread_mutex_lock(&lock[0]);
 #endif
+  //#ifdef DEBUG
+  //printf("USE MALLOC !!!!! malloc %zu\n", size);
+  //#endif
   void  *ptr;
 
   if (!size)
-    return NULL;
+    {
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[0]);
+#endif
+      return NULL;
+    }
   if (start == NULL)
     {
       start = sbrk(0);
@@ -61,6 +70,9 @@ void    *malloc(size_t size)
 #ifdef DEBUG
       printf("add memory fail\n");
 #endif
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[0]);
+#endif
       return (0);
     }
   useMemory(ptr, size);
@@ -72,20 +84,39 @@ void    *malloc(size_t size)
 #ifdef DEBUG
   printf("end of malloc\n");
 #endif
+#ifdef THREAD
+  pthread_mutex_unlock(&lock[0]);
+#endif
   return(ptr);
 }
 
 void	free(void *ptr)
 {
-  void	*tmp = start;
-#ifdef DEBUG
-  printf("USE FREE !!!!!, free this : %p\n",ptr);
+#ifdef THREAD
+  pthread_mutex_lock(&lock[1]);
 #endif
+  void	*tmp = start;
+  //#ifdef DEBUG
+  //printf("USE FREE !!!!!, free this : %p\n",ptr);
+  //#endif
   if (ptr < (void *)sizeof(t_metadata))
-    return ;
+    {
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[1]);
+#endif
+      return ;
+    }
   ptr -= sizeof(t_metadata);
   if (ptr < start || ptr >= end || GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
-    return;
+    {
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[1]);
+#endif
+      return;
+    }
+#ifdef THREAD
+  pthread_mutex_lock(&lock[0]);
+#endif
   SET_VALUE(((t_metadata *)ptr)->_properties, _USED, 0);
   while (tmp < ptr && ((t_metadata *)tmp)->_nextFree <  (t_metadata *)ptr)
     tmp = ((t_metadata *)tmp)->_nextFree;
@@ -97,20 +128,37 @@ void	free(void *ptr)
   ((t_metadata *)ptr)->_prevFree = tmp;
   ((t_metadata *)ptr)->_nextFree = ((t_metadata *)tmp)->_nextFree;
   ((t_metadata *)tmp)->_nextFree = ptr;
+#ifdef THREAD
+  pthread_mutex_unlock(&lock[0]);
+#endif
 #ifdef DEBUG
   show_alloc_mem();
+#endif
+#ifdef THREAD
+  pthread_mutex_unlock(&lock[1]);
 #endif
 }
 
 void	*realloc(void *ptr, size_t size)
 {
-#ifdef DEBUG
-  printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
+#ifdef THREAD
+  pthread_mutex_lock(&lock[2]);
 #endif
+  //#ifdef DEBUG
+  //printf("USE REALLOC !!!!! realloc this : %p, of %zu\n", ptr, size);
+  //#endif
   if (ptr < start + sizeof(t_metadata) || ptr > end)
-    return (malloc(size));
+    {
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[2]);
+#endif
+      return (malloc(size));
+    }
   if (size == 0)
   {
+#ifdef THREAD
+    pthread_mutex_unlock(&lock[2]);
+#endif
     free(ptr);
     return NULL;
   }
@@ -118,8 +166,21 @@ void	*realloc(void *ptr, size_t size)
   size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
   if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
+      free(ptr + sizeof(t_metadata));
+#ifdef THREAD
+      pthread_mutex_lock(&lock[0]);
+#endif
       if ((ptr = increaseMemory(ptr, size, start, &end)) == 0)
-	return (0);
+	{
+#ifdef THREAD
+	  pthread_mutex_unlock(&lock[0]);
+	  pthread_mutex_unlock(&lock[2]);
+#endif
+	  return (0);
+	}
+#ifdef THREAD
+	  pthread_mutex_unlock(&lock[0]);
+#endif
     }
   else if (((t_metadata *)ptr)->_allocSize >= size + 2 * sizeof(t_metadata))
     reduceMemory(ptr, size);
@@ -128,18 +189,29 @@ void	*realloc(void *ptr, size_t size)
   show_alloc_mem();
 #endif
   assert(ptr > start && ptr < end);
+#ifdef THREAD
+  pthread_mutex_unlock(&lock[2]);
+#endif
   return (ptr);
 }
 
 void		*calloc(size_t nmemb, size_t size)
 {
+#ifdef THREAD
+  pthread_mutex_lock(&lock[3]);
+#endif
   void		*ptr;
 
-#ifdef DEBUG
-  printf("USE CALLOC !!!!! nmemb = %zu, size  %zu\n", nmemb, size);
-#endif
+  //#ifdef DEBUG
+  //printf("USE CALLOC !!!!! nmemb = %zu, size  %zu\n", nmemb, size);
+  //#endif
   if (!(ptr = malloc(nmemb * size)))
-    return NULL;
+    {
+#ifdef THREAD
+      pthread_mutex_unlock(&lock[3]);
+#endif
+      return NULL;
+    }
 #ifdef DEBUG
   printf("AFTER MALLOC CALL !!!!! ptr = %p\n", ptr);
 #endif
@@ -151,6 +223,9 @@ void		*calloc(size_t nmemb, size_t size)
   printf("end of calloc, returning %p\n", ptr);
 #endif
   assert(ptr > start && ptr < end);
+#ifdef THREAD
+  pthread_mutex_unlock(&lock[3]);
+#endif
   return (ptr);
 }
 
