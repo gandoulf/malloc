@@ -30,7 +30,7 @@ void    *malloc(size_t size)
       ((t_metadata *)start)->_used = 0;
       end = sbrk(0);
     }
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
   ptr = findMemory(start, end, size);
   if ((ptr = addMemory(&end, ptr, size)) == 0)
     {
@@ -75,7 +75,7 @@ void	*realloc(void *ptr, size_t size)
     return NULL;
   }
   ptr -= sizeof(t_metadata);
-  size += (size % sizeof(int)) ? sizeof(int) - (size % sizeof(int)) : 0;
+  size += (size % sizeof(size_t)) ? sizeof(size_t) - (size % sizeof(size_t)) : 0;
   if (((t_metadata *)ptr)->_allocSize < size + sizeof(t_metadata))
     {
       if ((ptr = increaseMemory(ptr, size, start, &end)) == 0)
