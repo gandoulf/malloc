@@ -5,7 +5,7 @@
 ## Login   <agor_m@epitech.net>
 ## 
 ## Started on  Sat Feb  6 13:47:54 2016 Maxime Agor
-## Last update Sun Feb 14 16:23:22 2016 Maxime Agor
+## Last update Sun Feb 14 17:15:13 2016 Maxime Agor
 ##
 
 CC = gcc # C compiler
@@ -24,7 +24,8 @@ TARGET_LIB = libmalloc.so # target lib
 
 SRCS =	findMemory.c \
 	my_malloc.c \
-	reassignMemory.c
+	reassignMemory.c \
+	utils.c
 
 OBJS = $(SRCS:.c=.o)
 
