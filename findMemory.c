@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:24:08 2016 Enzo Resse
-** Last update Fri Feb 12 15:25:12 2016 Maxime Agor
+** Last update Fri Feb 12 20:17:03 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -64,7 +64,7 @@ void		*addMemory(void **end, void *ptr, size_t size)
 #endif
       if (breakPoint != *end)				// new
 	{
-	  space = getpagesize() * ((size + sizeof(t_metadata)) / getpagesize() + 1); //new
+	  space = getpagesize() * ((size + 2 * sizeof(t_metadata)) / getpagesize() + 1); //new
 #ifdef DEBUG
 	  printf("need a jump\n");
 #endif

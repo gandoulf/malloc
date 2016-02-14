@@ -5,7 +5,7 @@
 ** Login   <gandoulf@epitech.net>
 **
 ** Started on  Tue Jan 26 15:12:40 2016 gandoulf
-** Last update Fri Feb 12 13:37:03 2016 Maxime Agor
+** Last update Sun Feb 14 11:50:19 2016 gandoulf
 */
 
 #ifndef MYMALLOC_H_

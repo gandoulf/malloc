@@ -5,7 +5,7 @@
 ** Login   <resse_e@epitech.net>
 **
 ** Started on  Sat Feb  6 12:20:25 2016 Enzo Resse
-** Last update Fri Feb 12 17:40:29 2016 Maxime Agor
+** Last update Fri Feb 12 20:26:47 2016 gandoulf
 */
 
 #include "my_malloc.h"
@@ -81,6 +81,8 @@ void	free(void *ptr)
 #ifdef DEBUG
   printf("USE FREE !!!!!, free this : %p\n",ptr);
 #endif
+  if (ptr < (void *)sizeof(t_metadata))
+    return ;
   ptr -= sizeof(t_metadata);
   if (ptr < start || ptr >= end || GET_VALUE(((t_metadata *)ptr)->_properties, _USED) == 0)
     return;
